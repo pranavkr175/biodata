@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marital Biodata — Profile</title>
+  <style>
+    :root {
+      --accent: #4f46e5;
+      /* indigo */
+      --muted: #6b7280;
+      --card: #ffffff;
+      --bg: #f3f4f6;
+      --radius: 14px;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: url('https://images.unsplash.com/photo-1602416013695-161eea21b2a4?w=1600&q=80') center/cover no-repeat fixed;
+      background-color: rgba(255, 255, 255, 0.75);
+      background-blend-mode: lighten;
+      color: #111;
+      font-size: 16px;
+      line-height: 1.45
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 20px
+    }
+
+    /* Card */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 28px rgba(15, 23, 42, 0.08);
+      overflow: hidden
+    }
+
+    .header {
+      display: flex;
+      gap: 20px;
+      padding: 28px;
+      background: linear-gradient(90deg, var(--accent), #06b6d4);
+      color: white;
+      align-items: center
+    }
+
+    .avatar {
+      flex: 0 0 140px;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: fill;
+      border: 2px solid rgba(255, 255, 255, 0.18)
+    }
+
+    .title {
+      flex: 1
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 26px
+    }
+
+    .title p {
+      margin: 6px 0;
+      color: rgba(255, 255, 255, 0.92)
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px
+    }
+
+    .btn {
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: white;
+      color: var(--accent);
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.18)
+    }
+
+    /* Body layout */
+    .body {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
+      padding: 28px
+    }
+
+    @media (max-width:900px) {
+      .body {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* Left main */
+    .section {
+      background: linear-gradient(180deg, #fff, #fbfdff);
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 14px
+    }
+
+    .section h2 {
+      margin: 0 0 10px 0;
+      font-size: 18px
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px
+    }
+
+    .field {
+      padding: 8px;
+      border-radius: 8px;
+      background: #f8fafc
+    }
+
+    .label {
+      font-size: 13px;
+      color: #1013ea;
+      margin-bottom: 6px
+    }
+
+    .value {
+      font-weight: 600
+    }
+
+    
+
+    /* Right column */
+    .card-right {
+      position: sticky;
+      top: 24px
+    }
+
+    .contact {
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .contact .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-radius: 10px;
+      background: #f8fafc
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px
+    }
+
+    @media (max-width:700px) {
+      .gallery {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 60;
+      padding: 18px
+    }
+
+    .lightbox img {
+      max-width: 95%;
+      max-height: 85%;
+      border-radius: 8px
+    }
+
+    .lightbox .close {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer
+    }
+
+    .lightbox .nav {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between
+    }
+
+    .nav button {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px;
+      border-radius: 8px
+    }
+
+    /* print styles */
+    @media print {
+      body {
+        background: white
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 0
+      }
+
+      .header .actions,
+      .card-right,
+      .gallery img {
+        display: none
+      }
+
+      .header {
+        background: transparent;
+        color: black
+      }
+
+      .card {
+        box-shadow: none;
+        border-radius: 0
+      }
+    }
+
+    /* small utilities */
+    .muted {
+      color: #1013ea;
+      font-size: 14px
+    }
+
+    .chp {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: var(--accent);
+      font-weight: 600
+    }
+  </style>
+  <style>
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(2px);
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card" id="profileCard">
+      <div class="header">
+        <img id="mainPhoto" class="avatar" src="/pranavpassport11_11zon1.jpg" alt="Profile photo">
+        <div class="title">
+          <h1 id="nameLine">Pranav Kumar</h1>
+          <p id="locationLine">+2 Govt. Teacher </p>
+          <p id="locationLine">Patelnagar, Sultangnj, Bhagalpur, Bihar </p>
+          <div class="actions">
+            <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="body">
+        <main>
+          <section class="section">
+            <h2>Personal Details</h2>
+            <div class="grid" style="margin-top:10px">
+              <div>
+                <div class="label">Name</div>
+                <div class="value" id="p_name">Pranav Kumar</div>
+              </div>
+              <div>
+                <div class="label">Date of Birth</div>
+                <div class="value" id="p_age">20-08-1998</div>
+              </div>
+              <div>
+                <div class="label">Height</div>
+                <div class="value" id="p_height">5'7" (171 cm)</div>
+              </div>
+              <div>
+                <div class="label">Religion / Caste</div>
+                <div class="value" id="p_religion">Hindu • Kurmi</div>
+              </div>
+              <div>
+                <div class="label">Mother Tongue</div>
+                <div class="value" id="p_language">Hindi</div>
+              </div>
+              <div>
+                <div class="label">Marital Status</div>
+                <div class="value" id="p_status">Unmarried</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Education & Career</h2>
+            <div style="display:flexbox ;gap:12px;align-items:center;margin-bottom:8px">
+              <div style="margin-bottom:3px;" class="chip" id="p_edu">
+                <p style="margin-bottom: -8px; color: #06b6d4;">⇒  MCA (Master In Computer Application) <br>
+                <p style="font-size: 10px; font-family: cursive; color: #32b1f5;">   &nbsp; &nbsp; * from RGPV university bhopal in 2023
+                </p>
+                </p>
+              </div>
+              <div style="margin-bottom:3px;" class="chip" id="p_edu">
+                <p style="margin-bottom: -8px; color: #06b6d4;">⇒ NET qualified in Dec. 2024 <br>
+                <p style="font-size: 10px; font-family: cursive; color: #32b1f5;">&nbsp; &nbsp;* for admission in PHD</p>
+                </p>
+              </div>
+              <div style="margin-bottom:3px;" class="chip" id="p_edu">
+                <p style="margin-bottom: -8px; color: #06b6d4;">⇒ B.sc (IT) in 2020 <br>
+                <p style="font-size: 10px; font-family: cursive; color: #32b1f5;">&nbsp; &nbsp;* from RKD college patna </p>
+                </p>
+              </div>
+            </div>
+            <div class="muted">Occupation</div>
+            <div class="chp" style="font-weight:700;margin-top:6px;" id="p_occupation">
+              <p style="margin-bottom: -10px;  ">+2 Government Teacher <br>
+              <p  style="font-size: 13px; font-family: cursive; color: #2e434f;"> &nbsp; Sub : Computer Science</p>
+              </p>
+            </div>
+            <div class="muted" style="margin-top:8px">School location</div>
+            <div style="font-weight:700;margin-top:6px" id="p_income">Utkramit madhymik vidyalay basudeopur,
+              <br>shahkund, bhagalpur</div>
+          </section>
+
+          <section class="section">
+            <h2>About</h2>
+            <div class="about" id="p_about"><p>
+              Friendly, family-oriented, loves travel and cooking. Looking for a partner who values honesty and respect parents.
+            </p></div>
+          </section>
+
+          <section class="section">
+            <h2>Family Details</h2>
+            <div class="grid" style="margin-top:10px">
+              <div>
+                <div class="label">Father</div>
+                <div class="value field" id="f_father">
+                  <p>⇒ Name : Amit kumar <br>
+                  <p style="font-size: 15px; margin-top: -15px;"> Occupation : Ex-army / Currently in SAP</p>
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div class="label">Mother</div>
+                <div class="value field" id="f_mother">
+                  <p>⇒ Name : Shiwani devi <br> Homemaker/ House-wife</p>
+                </div>
+              </div>
+              <div style=>
+                <div class="label">Siblings : 2 brothers</div>
+                <div class="value field" id="f_siblings">
+                  <p style=>⇒ Name: Suraj kumar <br>occupation: contract baseb Staff nurse in Mayaganj bhagalpur</p>
+                                </div>
+
+              </div>
+
+              <div class="" style="grid-column:2">
+                <div class="label"> </div>
+                <div class="value field" id="f_siblings"> <p style=>⇒ Name: Sagar kumar <br>occupation: survey Amin in Bihar Govt.</p></div>
+
+              </div>
+
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Partner Preferences</h2>
+            <div class="about" id="p_preferences"><p>Well-educated, understanding, family-oriented. Preferably from a similar cultural background.</p></div>
+          </section>
+
+          <section class="section">
+            <h2>Photo Gallery</h2>
+            <div class="gallery" id="gallery">
+              <!-- images inserted by JS -->
+            </div>
+          </section>
+        </main>
+
+        <aside>
+          <div class="card-right">
+            <div class="section contact">
+              <h2>Contact</h2>
+              <div class="item">
+                <div class="muted">Phone</div>
+                <div id="c_phone">+91 8540092714</div>
+              </div>
+              <div class="item">
+                <div class="muted">Email</div>
+                <div id="c_email">pranavkr175@gmail.com</div>
+              </div>
+              <div class="item">
+                <div class="muted">Location</div>
+                <div id="c_location">Patna, Bihar, India</div>
+              </div>
+            </div>
+
+            <div class="section" style="margin-top:14px">
+              <h2>Quick Facts</h2>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+                <div class="field">
+                  <div class="label">Diet</div>
+                  <div class="value">NON-Veg</div>
+                </div>
+                <div class="field">
+                  <div class="label">Smoking</div>
+                  <div class="value">No</div>
+                </div>
+                <div class="field">
+                  <div class="label">Drinking</div>
+                  <div class="value">No</div>
+                </div>
+                <div class="field">
+                  <div class="label">Languages</div>
+                  <div class="value">Hindi, English</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section" style="margin-top:14px">
+              <h2>Download</h2>
+              <div style="margin-top:8px">You can print this page via the Print button for a clean PDF or download the
+                vCard.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox container -->
+  <div id="lightbox" style="display:none" class="lightbox" aria-hidden="true">
+    <button class="close" onclick="closeLightbox()">✕</button>
+    <div class="nav">
+      <button onclick="prevImage()">◀ Prev</button>
+      <button onclick="nextImage()">Next ▶</button>
+    </div>
+    <img id="lightboxImg" src="" alt="Large photo">
+  </div>
+
+  <script>
+    // ====== CONFIG: Edit these values to customize the profile ======
+    const PROFILE = {
+      name: 'Pranav Kumar',
+      age: "20-08-1998",
+      height: "5'8\" (173 cm)",
+      religion: 'Hindu',
+      caste: 'Brahmin',
+      language: 'Hindi',
+      status: 'Never Married',
+      education: 'M.Tech (Computer Science)',
+      occupation: 'Software Engineer at Acme Tech',
+      income: '₹12,00,000 / year',
+      location: 'Patna, Bihar, India',
+      phone: '+91 98xxxxxxxx',
+      email: 'pranav@example.com',
+      about: 'Friendly, family-oriented, loves travel and cooking. Looking for a partner who values honesty and mutual respect.',
+      father: 'Retired Principal',
+      mother: 'Homemaker',
+      siblings: '1 younger sister',
+      preferences: 'Well-educated, understanding, family-oriented. Preferably from a similar cultural background.'
+    };
+
+    const GALLERY = [
+      '/pranavpassport11_11zon1.jpg',
+     '/1.jpg','3.jpg','2.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg','9.jpg','10.jpg','11.jpg','12.jpg','13.jpg', '/first.jpg'
+    ];
+    // =============================================================
+
+    // Populate profile fields
+
+
+    // Gallery populate and lightbox
+    const galleryEl = document.getElementById('gallery');
+    GALLERY.forEach((src, idx) => {
+      const img = document.createElement('img');
+      img.src = src;
+
+      img.tabIndex = 0;
+      img.addEventListener('click', () => openLightbox(idx));
+      img.addEventListener('keydown', (e) => { if (e.key === 'Enter') openLightbox(idx) });
+      galleryEl.appendChild(img);
+      if (idx === 0);
+    });
+
+    let currentIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    function openLightbox(i) {
+      currentIndex = i;
+      lightboxImg.src = GALLERY[i];
+      lightbox.style.display = 'flex';
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    function prevImage() { currentIndex = (currentIndex - 1 + GALLERY.length) % GALLERY.length; lightboxImg.src = GALLERY[currentIndex]; }
+    function nextImage() { currentIndex = (currentIndex + 1) % GALLERY.length; lightboxImg.src = GALLERY[currentIndex]; }
+
+    // Close on background click or Esc
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') prevImage(); if (e.key === 'ArrowRight') nextImage(); });
+
+
+
+    // Simple print friendly tweak: remove shadows before print
+    window.onbeforeprint = () => { document.getElementById('profileCard').style.boxShadow = 'none' };
+    window.onafterprint = () => { document.getElementById('profileCard').style.boxShadow = '0 6px 28px rgba(15,23,42,0.08)' };
+
+  </script>
+</body>
+
+</html>
